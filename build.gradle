@@ -66,6 +66,9 @@ dependencies {
     compile 'org.apache.deltaspike.core:deltaspike-core-api'
     runtime 'org.apache.deltaspike.core:deltaspike-core-impl'
 
+    runtime 'org.apache.deltaspike.modules:deltaspike-data-module-impl'
+    compile 'org.apache.deltaspike.modules:deltaspike-data-module-api'
+
 
     // test dependencies
     // =================
