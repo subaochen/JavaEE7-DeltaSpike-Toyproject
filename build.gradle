@@ -54,6 +54,8 @@ dependencies {
     // Java EE API
     providedCompile group: 'javax', name: 'javaee-api', version: '7.0'
 
+    runtime "com.h2database:h2:1.4.192"
+
     // to auto-download wildfly
     wildfly "org.wildfly:wildfly-dist:$VERSION_WILDFLY@zip"
 
@@ -61,30 +63,34 @@ dependencies {
     compile 'org.slf4j:slf4j-api:1.7.12'
     runtime 'org.apache.logging.log4j:log4j-slf4j-impl'
 
-
     // DeltaSpike dependencies
-    compile 'org.apache.deltaspike.core:deltaspike-core-api'
-    runtime 'org.apache.deltaspike.core:deltaspike-core-impl'
-
     runtime 'org.apache.deltaspike.modules:deltaspike-data-module-impl'
     compile 'org.apache.deltaspike.modules:deltaspike-data-module-api'
-
 
     // test dependencies
     // =================
     // wildfly
-    testCompile 'org.wildfly.arquillian:wildfly-arquillian-container-embedded:2.0.0.Final'
+//    testCompile 'org.wildfly.arquillian:wildfly-arquillian-container-embedded:2.0.0.Final'
 
-    testCompile 'org.arquillian.universe:arquillian-junit'
-    testCompile 'org.arquillian.universe:arquillian-drone'
+//    testCompile 'org.arquillian.universe:arquillian-junit'
+//    testCompile 'org.arquillian.universe:arquillian-drone'
 
     // this offers dependency resolution for gradle via ShrinkWrap
-    testCompile 'org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-gradle-depchain:2.2.2'
+//    testCompile 'org.jboss.shrinkwrap.resolver:shrinkwrap-resolver-gradle-depchain:2.2.2'
 
     // junit frameworks provides the test environment for java
     testCompile 'junit:junit:4.12'
     // use AssertJ and not that shitty Hamcrest anymore
     testCompile 'org.assertj:assertj-core:3.5.2'
+
+    // The Test-Control module enables you to write CDI-based tests easily.
+    // Calls to stop and start the CDI container are built into the Test-Control API,
+    // with simplified commands for customizing the management of contexts
+    // and other aspects during testing.
+    testCompile 'org.apache.deltaspike.modules:deltaspike-test-control-module-api'
+    testRuntime 'org.apache.deltaspike.modules:deltaspike-test-control-module-impl'
+    testRuntime 'org.apache.deltaspike.cdictrl:deltaspike-cdictrl-weld'
+    testRuntime 'org.jboss.weld.se:weld-se-core:2.3.2.Final'
 }
 
 test {
@@ -122,5 +128,16 @@ processTestResources {
     from(sourceSets.test.resources.srcDirs) {
         include 'arquillian.xml'
         expand 'HOME_WILDFLY_TEST': HOME_WILDFLY_TEST
+    }
+}
+
+sourceSets {
+    main {
+        output.resourcesDir = 'build/classes/main'
+        output.classesDir   = 'build/classes/main'
+    }
+    test {
+        output.resourcesDir = 'build/classes/test'
+        output.classesDir   = 'build/classes/test'
     }
 }
